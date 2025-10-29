@@ -15,7 +15,7 @@ import (
 
 const (
 	alpineDir = "alpine-unfixed"
-	secFixUrl = "https://aquasecurity.github.io/secfixes-tracker/all.tar.gz"
+	secFixUrl = "https://manojkrishnanomula.github.io/secfixes-tracker/all.tar.gz"
 )
 
 type Updater struct {
