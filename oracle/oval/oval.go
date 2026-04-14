@@ -60,9 +60,11 @@ func (c Config) Update() error {
 
 	dir := filepath.Join(ovalDir, oracleDir)
 	bar := pb.StartNew(len(ov.Definitions))
-	for _, def := range ov.Definitions {
+	for i := range ov.Definitions {
+		def := &ov.Definitions[i]
 		def.Title = strings.TrimSpace(def.Title)
 		def.Description = strings.TrimSpace(def.Description)
+		ApplyCVSSDerivedFields(def.Cves)
 
 		//def.Title example: "\nELSA-2019-4827:  docker-engine docker-cli security update (IMPORTANT)"
 		elsaID := strings.TrimSpace(strings.Split(def.Title, ":")[0])

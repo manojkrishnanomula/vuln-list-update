@@ -2,6 +2,7 @@ package oval_test
 
 import (
 	"encoding/xml"
+	"fmt"
 	"os"
 	"testing"
 
@@ -160,12 +161,22 @@ func TestRedhatCVEJSON_UnmarshalJSON(t *testing.T) {
 							{
 								Impact: "",
 								Href:   "http://linux.oracle.com/cve/CVE-2007-0493.html",
-								ID:     "CVE-2007-0493",
+								Public: "20070626",
+								CVSS2:  "1.2/AV:L/AC:H/Au:S/C:N/I:P/A:N",
+								CVSS3:  "5.5/CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+								CVSS2Score:  "1.2",
+								CVSS2Vector: "AV:L/AC:H/Au:S/C:N/I:P/A:N",
+								CVSS3Score:  "5.5",
+								CVSS3Vector: "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+								ID:          "CVE-2007-0493",
 							},
 							{
 								Impact: "",
 								Href:   "http://linux.oracle.com/cve/CVE-2007-0494.html",
-								ID:     "CVE-2007-0494",
+								CVSS3:  "3.1/CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+								CVSS3Score:  "3.1",
+								CVSS3Vector: "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+								ID:          "CVE-2007-0494",
 							},
 						},
 						Issued: oval.Issued{
@@ -188,9 +199,34 @@ func TestRedhatCVEJSON_UnmarshalJSON(t *testing.T) {
 			if err != nil {
 				require.NoError(t, err)
 			}
+			for i := range got.Definitions {
+				oval.ApplyCVSSDerivedFields(got.Definitions[i].Cves)
+			}
 			if !assert.Equal(t, got, tt.want) {
 				t.Errorf("[%s]\n diff: %s", testname, pretty.Compare(got, tt.want))
 			}
+		})
+	}
+}
+
+func TestSplitOracleCVSSAttr(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		in         string
+		wantScore  string
+		wantVector string
+	}{
+		{"", "", ""},
+		{"7.3/CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L", "7.3", "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"},
+		{"2.1/AV:L/AC:L/Au:N/C:P/I:N/A:N", "2.1", "AV:L/AC:L/Au:N/C:P/I:N/A:N"},
+		{"nope", "nope", ""},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("%q", tt.in), func(t *testing.T) {
+			t.Parallel()
+			gotScore, gotVector := oval.SplitOracleCVSSAttr(tt.in)
+			assert.Equal(t, tt.wantScore, gotScore)
+			assert.Equal(t, tt.wantVector, gotVector)
 		})
 	}
 }

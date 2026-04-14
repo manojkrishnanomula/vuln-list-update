@@ -34,8 +34,8 @@ ELSA-2007-0057:  Moderate: bind security update  (MODERATE)
 <severity>MODERATE</severity>
 <rights>Copyright 2007 Oracle, Inc.</rights>
 <issued date="2007-06-26"/>
-<cve href="http://linux.oracle.com/cve/CVE-2007-0493.html">CVE-2007-0493</cve>
-<cve href="http://linux.oracle.com/cve/CVE-2007-0494.html">CVE-2007-0494</cve>
+<cve cvss2="1.2/AV:L/AC:H/Au:S/C:N/I:P/A:N" cvss3="5.5/CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N" href="http://linux.oracle.com/cve/CVE-2007-0493.html" public="20070626">CVE-2007-0493</cve>
+<cve cvss3="3.1/CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L" href="http://linux.oracle.com/cve/CVE-2007-0494.html">CVE-2007-0494</cve>
 
 </advisory>
 </metadata>

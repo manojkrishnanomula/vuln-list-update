@@ -73,7 +73,7 @@ func TestConfig_Update(t *testing.T) {
 				"/oval/com.oracle.elsa-all.xml.bz2": "testdata/invalid-title-format.xml.bz2",
 			},
 			goldenFiles: map[string]string{
-				"/tmp/oval/oracle/2007/ELSA-2007-0057.json": "testdata/golden/ELSA-2007-0057.json",
+				"/tmp/oval/oracle/2007/ELSA-2007-0057.json": "testdata/golden/ELSA-2007-0057-invalid-title.json",
 			},
 		},
 		{
