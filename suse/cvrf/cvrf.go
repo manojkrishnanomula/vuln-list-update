@@ -47,7 +47,7 @@ func NewConfig() Config {
 func (c Config) Update() error {
 	log.Print("Fetching SUSE data...")
 
-	res, err := utils.FetchURL(c.URL, "", retry)
+	res, err := utils.FetchURL(c.URL, "", c.Retry)
 	if err != nil {
 		return xerrors.Errorf("Cannot download SUSE CVRF list: %v", err)
 	}
@@ -60,6 +60,9 @@ func (c Config) Update() error {
 			cvrfUrlsMap[match[2]] = append(cvrfUrlsMap[match[2]], c.URL+match[1])
 		}
 	}
+	if err := scanner.Err(); err != nil {
+		return xerrors.Errorf("failed reading SUSE CVRF list: %w", err)
+	}
 
 	for os, urls := range cvrfUrlsMap {
 		err = c.update(os, urls)
@@ -71,7 +74,7 @@ func (c Config) Update() error {
 }
 
 func (c Config) update(os string, urls []string) error {
-	cvrfXmls, err := utils.FetchConcurrently(urls, concurrency, wait, retry)
+	cvrfXmls, err := utils.FetchConcurrently(urls, concurrency, wait, c.Retry)
 	if err != nil {
 		log.Printf("failed to fetch CVRF data from SUSE. err: %s", err)
 	}

@@ -19,7 +19,10 @@ import (
 	"golang.org/x/xerrors"
 )
 
-var vulnListDir = filepath.Join(CacheDir(), "vuln-list")
+var (
+	vulnListDir        = filepath.Join(CacheDir(), "vuln-list")
+	defaultHTTPTimeout = 2 * time.Minute
+)
 
 func CacheDir() string {
 	cacheDir, err := os.UserCacheDir()
@@ -132,7 +135,7 @@ func RandInt() int {
 }
 
 func fetchURL(url string, headers map[string]string) ([]byte, error) {
-	req := gorequest.New().Get(url)
+	req := gorequest.New().Timeout(defaultHTTPTimeout).Get(url)
 	for key, value := range headers {
 		req.Header.Add(key, value)
 	}
