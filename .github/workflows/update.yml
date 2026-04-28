@@ -8,7 +8,8 @@ jobs:
   update:
     name: Update repo vuln-list
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # Full pipeline runs many sequential updaters; GitHub max per job is 360m.
+    timeout-minutes: 360
     permissions:
       contents: read
     env:
