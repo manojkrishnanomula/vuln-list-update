@@ -19,13 +19,15 @@ import (
 )
 
 var (
-	cvrfCVEURL  = "http://ftp.suse.com/pub/projects/security/cvrf-cve/"
-	fileRegexp  = regexp.MustCompile(`<a href="(cvrf-(CVE-\d{4}-\d+)\.xml)">.*`)
-	retry       = 5
-	concurrency = 20
-	wait        = 1
-	cvrfDir     = "cvrf"
-	suseCVEDir  = "suse-cves"
+	cvrfCVEURL = "http://ftp.suse.com/pub/projects/security/cvrf-cve/"
+	fileRegexp = regexp.MustCompile(`<a href="(cvrf-(CVE-\d{4}-\d+)\.xml)">.*`)
+	retry      = 5
+	// Keep concurrency modest: many large XML bodies at once can OOM GitHub-hosted runners.
+	fetchConcurrency = 8
+	fetchBatchSize   = 250
+	wait             = 1
+	cvrfDir          = "cvrf"
+	suseCVEDir       = "suse-cves"
 )
 
 type Config struct {
@@ -69,41 +71,48 @@ func (c Config) Update() error {
 		urls = append(urls, u)
 	}
 
-	cvrfXMLs, err := utils.FetchConcurrently(urls, concurrency, wait, c.Retry)
-	if err != nil {
-		log.Printf("failed to fetch CVE CVRF data from SUSE. err: %s", err)
-	}
+	log.Printf("Saving %d SUSE CVE CVRF documents (batches of %d)...", len(urls), fetchBatchSize)
+	bar := pb.StartNew(len(urls))
+	for start := 0; start < len(urls); start += fetchBatchSize {
+		end := start + fetchBatchSize
+		if end > len(urls) {
+			end = len(urls)
+		}
+		batch := urls[start:end]
+		log.Printf("SUSE CVE CVRF fetch batch %d-%d of %d", start+1, end, len(urls))
+		bodies, err := utils.FetchConcurrently(batch, fetchConcurrency, wait, c.Retry)
+		if err != nil {
+			log.Printf("batch fetch warning (SUSE CVE CVRF): %s", err)
+		}
+		for _, cvrfXML := range bodies {
+			var cv Cvrf
+			if len(cvrfXML) == 0 {
+				log.Println("empty CVE CVRF xml")
+				bar.Increment()
+				continue
+			}
 
-	log.Printf("Saving SUSE CVE CVRF data...")
-	bar := pb.StartNew(len(cvrfXMLs))
-	for _, cvrfXML := range cvrfXMLs {
-		var cv Cvrf
-		if len(cvrfXML) == 0 {
-			log.Println("empty CVE CVRF xml")
+			if !utf8.Valid(cvrfXML) {
+				log.Println("invalid UTF-8")
+				cvrfXML = []byte(strings.ToValidUTF8(string(cvrfXML), ""))
+			}
+
+			if err = xml.Unmarshal(cvrfXML, &cv); err != nil {
+				return xerrors.Errorf("failed to decode SUSE CVE CVRF XML: %w", err)
+			}
+
+			cveID := extractCVEID(cv)
+			if cveID == "" {
+				log.Printf("invalid CVE CVRF document ID: %s", cv.Tracking.ID)
+				bar.Increment()
+				continue
+			}
+
+			if err = c.saveCVEPerYear(cveID, cv); err != nil {
+				return xerrors.Errorf("failed to save SUSE CVE CVRF: %w", err)
+			}
 			bar.Increment()
-			continue
 		}
-
-		if !utf8.Valid(cvrfXML) {
-			log.Println("invalid UTF-8")
-			cvrfXML = []byte(strings.ToValidUTF8(string(cvrfXML), ""))
-		}
-
-		if err = xml.Unmarshal(cvrfXML, &cv); err != nil {
-			return xerrors.Errorf("failed to decode SUSE CVE CVRF XML: %w", err)
-		}
-
-		cveID := extractCVEID(cv)
-		if cveID == "" {
-			log.Printf("invalid CVE CVRF document ID: %s", cv.Tracking.ID)
-			bar.Increment()
-			continue
-		}
-
-		if err = c.saveCVEPerYear(cveID, cv); err != nil {
-			return xerrors.Errorf("failed to save SUSE CVE CVRF: %w", err)
-		}
-		bar.Increment()
 	}
 	bar.Finish()
 	return nil

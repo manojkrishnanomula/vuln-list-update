@@ -19,13 +19,15 @@ import (
 )
 
 var (
-	cvrfURL     = "http://ftp.suse.com/pub/projects/security/cvrf/"
-	fileRegexp  = regexp.MustCompile(`<a href="(cvrf-(.*?)-.*)">.*`)
-	retry       = 5
-	concurrency = 20
-	wait        = 1
-	cvrfDir     = "cvrf"
-	suseDir     = "suse"
+	cvrfURL    = "http://ftp.suse.com/pub/projects/security/cvrf/"
+	fileRegexp = regexp.MustCompile(`<a href="(cvrf-(.*?)-.*)">.*`)
+	retry      = 5
+	// Modest concurrency to avoid OOM on GitHub-hosted runners when many large XMLs are in flight.
+	fetchConcurrency = 8
+	fetchBatchSize   = 250
+	wait             = 1
+	cvrfDir          = "cvrf"
+	suseDir          = "suse"
 )
 
 type Config struct {
@@ -74,39 +76,41 @@ func (c Config) Update() error {
 }
 
 func (c Config) update(os string, urls []string) error {
-	cvrfXmls, err := utils.FetchConcurrently(urls, concurrency, wait, c.Retry)
-	if err != nil {
-		log.Printf("failed to fetch CVRF data from SUSE. err: %s", err)
-	}
-
-	var cvrfs []Cvrf
-	for _, cvrfXml := range cvrfXmls {
-		var cv Cvrf
-		if len(cvrfXml) == 0 {
-			log.Println("empty CVRF xml")
-			continue
-		}
-
-		if !utf8.Valid(cvrfXml) {
-			log.Println("invalid UTF-8")
-			cvrfXml = []byte(strings.ToValidUTF8(string(cvrfXml), ""))
-		}
-
-		err = xml.Unmarshal(cvrfXml, &cv)
-		if err != nil {
-			return xerrors.Errorf("failed to decode SUSE XML: %w", err)
-		}
-		cvrfs = append(cvrfs, cv)
-	}
-
 	dir := filepath.Join(cvrfDir, suseDir, os)
-	log.Printf("Fetching %s CVRF data...", os)
-	bar := pb.StartNew(len(cvrfs))
-	for _, cvrf := range cvrfs {
-		if err = c.saveCvrfPerYear(dir, cvrf.Tracking.ID, cvrf); err != nil {
-			return xerrors.Errorf("failed to save CVRF: %w", err)
+	log.Printf("Fetching %s CVRF data (%d advisories, batches of %d)...", os, len(urls), fetchBatchSize)
+	bar := pb.StartNew(len(urls))
+	for start := 0; start < len(urls); start += fetchBatchSize {
+		end := start + fetchBatchSize
+		if end > len(urls) {
+			end = len(urls)
 		}
-		bar.Increment()
+		batch := urls[start:end]
+		cvrfXmls, err := utils.FetchConcurrently(batch, fetchConcurrency, wait, c.Retry)
+		if err != nil {
+			log.Printf("failed to fetch CVRF batch for %s: %s", os, err)
+		}
+		for _, cvrfXml := range cvrfXmls {
+			var cv Cvrf
+			if len(cvrfXml) == 0 {
+				log.Println("empty CVRF xml")
+				bar.Increment()
+				continue
+			}
+
+			if !utf8.Valid(cvrfXml) {
+				log.Println("invalid UTF-8")
+				cvrfXml = []byte(strings.ToValidUTF8(string(cvrfXml), ""))
+			}
+
+			err = xml.Unmarshal(cvrfXml, &cv)
+			if err != nil {
+				return xerrors.Errorf("failed to decode SUSE XML: %w", err)
+			}
+			if err = c.saveCvrfPerYear(dir, cv.Tracking.ID, cv); err != nil {
+				return xerrors.Errorf("failed to save CVRF: %w", err)
+			}
+			bar.Increment()
+		}
 	}
 	bar.Finish()
 
