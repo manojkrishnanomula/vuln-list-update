@@ -22,9 +22,9 @@ var (
 	cvrfCVEURL = "http://ftp.suse.com/pub/projects/security/cvrf-cve/"
 	fileRegexp = regexp.MustCompile(`<a href="(cvrf-(CVE-\d{4}-\d+)\.xml)">.*`)
 	retry      = 5
-	// Keep concurrency modest: many large XML bodies at once can OOM GitHub-hosted runners.
-	fetchConcurrency = 8
-	fetchBatchSize   = 250
+	// Keep concurrency and batch size modest: many XML bodies in memory can OOM runners.
+	fetchConcurrency = 5
+	fetchBatchSize   = 100
 	wait             = 1
 	cvrfDir          = "cvrf"
 	suseCVEDir       = "suse-cves"

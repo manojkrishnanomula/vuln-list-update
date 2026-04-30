@@ -180,16 +180,17 @@ func FetchConcurrently(urls []string, concurrency, wait, retry int) (responses [
 	}
 	bar.Finish()
 
+	// Collect one result per URL. Do not use a single time.After deadline for the whole
+	// loop: that fires once after N minutes from the first wait, so large batches (e.g.
+	// SUSE CVRF) always time out before all responses arrive. Per-request timeouts live in
+	// fetchURL / FetchURL instead.
 	var errs []error
-	timeout := time.After(10 * 60 * time.Second)
 	for range urls {
 		select {
 		case res := <-resChan:
 			responses = append(responses, res)
 		case err := <-errChan:
 			errs = append(errs, err)
-		case <-timeout:
-			return nil, xerrors.New("Timeout Fetching URL")
 		}
 	}
 	if 0 < len(errs) {
