@@ -4,17 +4,13 @@ on:
     - cron: "0 */6 * * *"
   workflow_dispatch:
 
-# GitHub hosted runners: max 6h per *job* (this limit is on each job, not the workflow).
-# Split into sequential jobs so the full update can exceed 6h total; each part pulls the
-# latest github.com/owner/vuln-list so earlier pushes are visible in later checkouts.
-# SUSE CVRF and SUSE CVE CVRF run in separate jobs (each can approach 6h alone).
+# GitHub hosted runners: max 6h per job.
 env:
   VULN_LIST_DIR: "vuln-list"
 
 jobs:
-  # --- Part 1: through CWE (faster updaters) ---
-  update-1:
-    name: "Update vuln-list (1/4) Alpine–CWE"
+  update:
+    name: Update repo vuln-list
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions:
@@ -74,127 +70,17 @@ jobs:
         name: CWE
         run: ./scripts/update.sh cwe "CWE"
 
-  # --- Part 2: SUSE CVRF only (~hours; own 6h cap) ---
-  update-2-suse-cvrf:
-    name: "Update vuln-list (2/4) SUSE CVRF"
-    needs: [update-1]
-    if: always()
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    env:
-      # Many files under cvrf/suse/<product>; avoid staging entire vuln-list on commit.
-      VULN_LIST_GIT_ADD_PATHS: "cvrf/suse"
-    permissions:
-      contents: read
-    steps:
-      - name: Check out code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          persist-credentials: false
-
-      - name: Set up Go
-        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: go.mod
-
-      - name: Check out vuln-list repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          repository: ${{ github.repository_owner }}/vuln-list
-          token: ${{ secrets.SA_GH_VULN_LIST_UPDATE_TOKEN }}
-          path: ${{ env.VULN_LIST_DIR }}
-          persist-credentials: true
-
-      - name: Setup github user email and name
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-
-      - name: Compile vuln-list-update
-        run: go build -o vuln-list-update .
-
       - if: always()
         name: SUSE CVRF
+        env:
+          VULN_LIST_GIT_ADD_PATHS: "cvrf/suse"
         run: ./scripts/update.sh suse-cvrf "SUSE CVRF"
-
-  # --- Part 3: SUSE CVE CVRF only (often dominates wall time; own 6h cap) ---
-  update-3-suse-cvrf-cve:
-    name: "Update vuln-list (3/4) SUSE CVE CVRF"
-    needs: [update-2-suse-cvrf]
-    if: always()
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    env:
-      # Tens of thousands of CVE JSON files; scoped add avoids full-tree git index work.
-      VULN_LIST_GIT_ADD_PATHS: "cvrf/suse-cves"
-    permissions:
-      contents: read
-    steps:
-      - name: Check out code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          persist-credentials: false
-
-      - name: Set up Go
-        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: go.mod
-
-      - name: Check out vuln-list repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          repository: ${{ github.repository_owner }}/vuln-list
-          token: ${{ secrets.SA_GH_VULN_LIST_UPDATE_TOKEN }}
-          path: ${{ env.VULN_LIST_DIR }}
-          persist-credentials: true
-
-      - name: Setup github user email and name
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-
-      - name: Compile vuln-list-update
-        run: go build -o vuln-list-update .
 
       - if: always()
         name: SUSE CVE CVRF
+        env:
+          VULN_LIST_GIT_ADD_PATHS: "cvrf/suse-cves"
         run: ./scripts/update.sh suse-cvrf-cve "SUSE CVE CVRF"
-
-  # --- Part 4: remaining trackers ---
-  update-4:
-    name: "Update vuln-list (4/4) remaining"
-    needs: [update-3-suse-cvrf-cve]
-    if: always()
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    permissions:
-      contents: read
-    steps:
-      - name: Check out code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          persist-credentials: false
-
-      - name: Set up Go
-        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
-        with:
-          go-version-file: go.mod
-
-      - name: Check out vuln-list repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          repository: ${{ github.repository_owner }}/vuln-list
-          token: ${{ secrets.SA_GH_VULN_LIST_UPDATE_TOKEN }}
-          path: ${{ env.VULN_LIST_DIR }}
-          persist-credentials: true
-
-      - name: Setup github user email and name
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-
-      - name: Compile vuln-list-update
-        run: go build -o vuln-list-update .
 
       - if: always()
         name: GitLab Advisory Database
@@ -248,15 +134,9 @@ jobs:
         name: Root CVE Tracker
         run: ./scripts/update.sh rootio "Root CVE Feed Tracker"
 
-  # Notify when any update job failed or was cancelled (e.g. timeout on one part)
-  teams-notify:
-    name: Microsoft Teams Notification
-    needs: [update-1, update-2-suse-cvrf, update-3-suse-cvrf-cve, update-4]
-    if: always() && (needs.update-1.result == 'failure' || needs.update-1.result == 'cancelled' || needs['update-2-suse-cvrf'].result == 'failure' || needs['update-2-suse-cvrf'].result == 'cancelled' || needs['update-3-suse-cvrf-cve'].result == 'failure' || needs['update-3-suse-cvrf-cve'].result == 'cancelled' || needs.update-4.result == 'failure' || needs.update-4.result == 'cancelled')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Microsoft Teams
+      - name: Microsoft Teams Notification
         uses: Skitionek/notify-microsoft-teams@e7a2493ac87dad8aa7a62f079f295e54ff511d88
+        if: failure()
         with:
           webhook_url: ${{ secrets.TRIVY_MSTEAMS_WEBHOOK }}
           needs: ${{ toJson(needs) }}
