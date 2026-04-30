@@ -4,16 +4,20 @@ on:
     - cron: "0 */6 * * *"
   workflow_dispatch:
 
+# GitHub hosted runners: max 6h per *job* (this limit is on each job, not the workflow).
+# Split into sequential jobs so the full update can exceed 6h total; each part pulls the
+# latest github.com/owner/vuln-list so earlier pushes are visible in later checkouts.
+env:
+  VULN_LIST_DIR: "vuln-list"
+
 jobs:
-  update:
-    name: Update repo vuln-list
+  # --- Part 1: through CWE (faster updaters) ---
+  update-1:
+    name: "Update vuln-list (1/3) Alpine–CWE"
     runs-on: ubuntu-latest
-    # Full pipeline runs many sequential updaters; GitHub max per job is 360m.
     timeout-minutes: 360
     permissions:
       contents: read
-    env:
-      VULN_LIST_DIR: "vuln-list"
     steps:
       - name: Check out code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -31,7 +35,7 @@ jobs:
           repository: ${{ github.repository_owner }}/vuln-list
           token: ${{ secrets.SA_GH_VULN_LIST_UPDATE_TOKEN }}
           path: ${{ env.VULN_LIST_DIR }}
-          persist-credentials: true # update.sh runs git push
+          persist-credentials: true
 
       - name: Setup github user email and name
         run: |
@@ -69,6 +73,42 @@ jobs:
         name: CWE
         run: ./scripts/update.sh cwe "CWE"
 
+  # --- Part 2: SUSE (slow; isolated so other work can complete in part 1/3) ---
+  update-2:
+    name: "Update vuln-list (2/3) SUSE"
+    needs: [update-1]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    steps:
+      - name: Check out code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: go.mod
+
+      - name: Check out vuln-list repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          repository: ${{ github.repository_owner }}/vuln-list
+          token: ${{ secrets.SA_GH_VULN_LIST_UPDATE_TOKEN }}
+          path: ${{ env.VULN_LIST_DIR }}
+          persist-credentials: true
+
+      - name: Setup github user email and name
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Compile vuln-list-update
+        run: go build -o vuln-list-update .
+
       - if: always()
         name: SUSE CVRF
         run: ./scripts/update.sh suse-cvrf "SUSE CVRF"
@@ -76,6 +116,42 @@ jobs:
       - if: always()
         name: SUSE CVE CVRF
         run: ./scripts/update.sh suse-cvrf-cve "SUSE CVE CVRF"
+
+  # --- Part 3: remaining trackers + notify ---
+  update-3:
+    name: "Update vuln-list (3/3) remaining"
+    needs: [update-2]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    steps:
+      - name: Check out code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version-file: go.mod
+
+      - name: Check out vuln-list repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          repository: ${{ github.repository_owner }}/vuln-list
+          token: ${{ secrets.SA_GH_VULN_LIST_UPDATE_TOKEN }}
+          path: ${{ env.VULN_LIST_DIR }}
+          persist-credentials: true
+
+      - name: Setup github user email and name
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Compile vuln-list-update
+        run: go build -o vuln-list-update .
 
       - if: always()
         name: GitLab Advisory Database
@@ -129,9 +205,15 @@ jobs:
         name: Root CVE Tracker
         run: ./scripts/update.sh rootio "Root CVE Feed Tracker"
 
-      - name: Microsoft Teams Notification
+  # Notify when any update job failed or was cancelled (e.g. timeout on one part)
+  teams-notify:
+    name: Microsoft Teams Notification
+    needs: [update-1, update-2, update-3]
+    if: always() && (needs.update-1.result == 'failure' || needs.update-1.result == 'cancelled' || needs.update-2.result == 'failure' || needs.update-2.result == 'cancelled' || needs.update-3.result == 'failure' || needs.update-3.result == 'cancelled')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Microsoft Teams
         uses: Skitionek/notify-microsoft-teams@e7a2493ac87dad8aa7a62f079f295e54ff511d88
-        if: failure()
         with:
           webhook_url: ${{ secrets.TRIVY_MSTEAMS_WEBHOOK }}
           needs: ${{ toJson(needs) }}
