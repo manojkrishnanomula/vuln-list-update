@@ -81,6 +81,9 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    env:
+      # Many files under cvrf/suse/<product>; avoid staging entire vuln-list on commit.
+      VULN_LIST_GIT_ADD_PATHS: "cvrf/suse"
     permissions:
       contents: read
     steps:
@@ -121,6 +124,9 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    env:
+      # Tens of thousands of CVE JSON files; scoped add avoids full-tree git index work.
+      VULN_LIST_GIT_ADD_PATHS: "cvrf/suse-cves"
     permissions:
       contents: read
     steps:
