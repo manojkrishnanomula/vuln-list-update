@@ -1,0 +1,216 @@
+{
+  "alma": {
+    "all-major": [
+      "ALSA-2022:4991 [arches=aarch64,i686,ppc64le,s390x,x86_64] (Alma 8)",
+      "ALSA-2022:6457 [arches=aarch64,i686,ppc64le,s390x,x86_64] (Alma 8)",
+      "ALSA-2022:7089 [arches=aarch64,i686,ppc64le,s390x,x86_64] (Alma 8)"
+    ],
+    "multi-arch": [
+      "ALSA-2022:7683 [arches=aarch64,ppc64le,s390x,x86_64] (Alma 8)",
+      "ALSA-2022:7793 [arches=aarch64,ppc64le,s390x,x86_64] (Alma 8)",
+      "ALSA-2023:0049 [arches=aarch64,ppc64le,x86_64] (Alma 8)"
+    ],
+    "noarch-only": [
+      "ALSA-2023:0835 [arches=] (Alma 8)",
+      "ALSA-2023:4520 [arches=] (Alma 8)",
+      "ALSA-2023:5245 [arches=] (Alma 8)"
+    ],
+    "single-aarch64": [
+      "ALSA-2020:1644 [arches=aarch64] (Alma 8)",
+      "ALSA-2024:2098 [arches=aarch64] (Alma 8)",
+      "ALSA-2024:11216 [arches=aarch64] (Alma 9)"
+    ],
+    "single-x86_64": [
+      "ALSA-2022:5468 [arches=x86_64] (Alma 8)",
+      "ALSA-2021:4368 [arches=x86_64] (Alma 8)",
+      "ALSA-2021:4489 [arches=x86_64] (Alma 8)"
+    ]
+  },
+  "alpine": {
+    "all-major": [
+      "edge/community [arches=aarch64,armhf,armv7,loongarch64,ppc64le,riscv64,s390x,x86,x86_64]",
+      "v3.10/community [arches=aarch64,armhf,armv7,ppc64le,s390x,x86,x86_64]",
+      "v3.12/community [arches=aarch64,armhf,armv7,mips64,ppc64le,s390x,x86,x86_64]"
+    ],
+    "subset-arch": [
+      "v3.2/main [arches=armhf,x86,x86_64]",
+      "v3.5/community [arches=aarch64,armhf,x86,x86_64]"
+    ]
+  },
+  "amazon": {
+    "multi-arch": [
+      "ALAS-2012-120 [arches=i686,x86_64] (AL1)",
+      "ALAS-2015-570 [arches=i686,x86_64] (AL1)",
+      "ALAS2-2021-1587 [arches=aarch64,i686,x86_64] (AL2)"
+    ],
+    "noarch-only": [
+      "ALAS-2014-356 [arches=] (AL1)",
+      "ALAS2-2020-1446 [arches=] (AL2)",
+      "ALAS2-2024-2607 [arches=] (AL2)"
+    ],
+    "single-x86_64": [
+      "ALAS2-2019-1184 [arches=x86_64] (AL2)",
+      "ALAS2-2018-1020 [arches=x86_64] (AL2)",
+      "ALAS-2018-1071 [arches=x86_64] (AL1)"
+    ]
+  },
+  "openeuler": {
+    "multi-arch": [
+      "openEuler-SA-2021-1257 [arches=aarch64,x86_64] (2021/cvrf-openEuler-SA-2021-1257.xml)",
+      "openEuler-SA-2022-2079 [arches=aarch64,x86_64] (2022/cvrf-openEuler-SA-2022-2079.xml)",
+      "openEuler-SA-2024-1905 [arches=aarch64,x86_64] (2024/cvrf-openEuler-SA-2024-1905.xml)"
+    ],
+    "noarch-only": [
+      "openEuler-SA-2024-2003 [arches=] (2024/cvrf-openEuler-SA-2024-2003.xml)",
+      "openEuler-SA-2025-1557 [arches=] (2025/cvrf-openEuler-SA-2025-1557.xml)",
+      "openEuler-SA-2025-2461 [arches=] (2025/cvrf-openEuler-SA-2025-2461.xml)"
+    ],
+    "single-aarch64": [
+      "openEuler-SA-2025-1342 [arches=aarch64] (2025/cvrf-openEuler-SA-2025-1342.xml)",
+      "openEuler-SA-2024-1848 [arches=aarch64] (2024/cvrf-openEuler-SA-2024-1848.xml)",
+      "openEuler-SA-2024-2566 [arches=aarch64] (2024/cvrf-openEuler-SA-2024-2566.xml)"
+    ],
+    "single-x86_64": [
+      "openEuler-SA-2025-1281 [arches=x86_64] (2025/cvrf-openEuler-SA-2025-1281.xml)",
+      "openEuler-SA-2022-1899 [arches=x86_64] (2022/cvrf-openEuler-SA-2022-1899.xml)",
+      "openEuler-SA-2024-1731 [arches=x86_64] (2024/cvrf-openEuler-SA-2024-1731.xml)"
+    ]
+  },
+  "redhat-csaf-vex": {
+    "all-major": [
+      "CVE-1999-0710 [arches=i386,ia64,ppc,s390,s390x,x86_64] (cve-1999-0710.json)",
+      "CVE-1999-1572 [arches=i386,ia64,ppc,s390,s390x,x86_64] (cve-1999-1572.json)",
+      "CVE-2000-1191 [arches=i386,ia64,ppc,s390,s390x,x86_64] (cve-2000-1191.json)"
+    ],
+    "multi-arch": [
+      "CVE-2002-0389 [arches=i686,ppc64,s390x,x86_64] (cve-2002-0389.json)",
+      "CVE-2003-0845 [arches=i386,x86_64] (cve-2003-0845.json)",
+      "CVE-2003-1564 [arches=i386,ia64] (cve-2003-1564.json)"
+    ],
+    "single-aarch64": null,
+    "single-amd64": [
+      "CVE-2017-16137 [arches=amd64] (cve-2017-16137.json)",
+      "CVE-2017-16138 [arches=amd64] (cve-2017-16138.json)",
+      "CVE-2018-1107 [arches=amd64] (cve-2018-1107.json)"
+    ],
+    "single-i386": [
+      "CVE-2004-0179 [arches=i386] (cve-2004-0179.json)",
+      "CVE-2004-0700 [arches=i386] (cve-2004-0700.json)",
+      "CVE-2004-0752 [arches=i386] (cve-2004-0752.json)"
+    ],
+    "single-i686": [
+      "CVE-2016-7867 [arches=i686] (cve-2016-7867.json)",
+      "CVE-2016-7874 [arches=i686] (cve-2016-7874.json)",
+      "CVE-2016-7873 [arches=i686] (cve-2016-7873.json)"
+    ],
+    "single-ppc64": [
+      "CVE-2014-4038 [arches=ppc64] (cve-2014-4038.json)",
+      "CVE-2014-4040 [arches=ppc64] (cve-2014-4040.json)",
+      "CVE-2014-4039 [arches=ppc64] (cve-2014-4039.json)"
+    ],
+    "single-x86_64": [
+      "CVE-2008-7313 [arches=x86_64] (cve-2008-7313.json)",
+      "CVE-2009-3290 [arches=x86_64] (cve-2009-3290.json)",
+      "CVE-2009-3722 [arches=x86_64] (cve-2009-3722.json)"
+    ]
+  },
+  "redhat-oval": {
+    "all-major": [
+      "RHSA-2017:0498 [arches=aarch64,i686,ppc64,ppc64le,s390x,x86_64] (RHEL6/rhel-6-els.oval.xml.bz2)",
+      "RHSA-2015:1210 [arches=i686,ppc,ppc64,s390,s390x,x86_64] (RHEL6/rhel-6-els.oval.xml.bz2)",
+      "RHSA-2017:2128 [arches=aarch64,i686,ppc,ppc64,ppc64le,s390,s390x,x86_64] (RHEL7/rhel-7.2-eus.oval.xml.bz2)"
+    ],
+    "multi-arch": [
+      "RHSA-2021:1796 [arches=aarch64,ppc64le,s390x,x86_64] (RHEL8/rhel-8.4-eus.oval.xml.bz2)",
+      "RHSA-2024:6140 [arches=aarch64,ppc64le,s390x,x86_64] (RHEL9/rhel-9.2-eus.oval.xml.bz2)",
+      "RHSA-2025:0147 [arches=aarch64,ppc64le,s390x,x86_64] (RHEL9/rhel-9.6-aus.oval.xml.bz2)"
+    ],
+    "single-aarch64": [
+      "RHSA-2017:0372 [arches=aarch64] (RHEL7/rhel-7-alt.oval.xml.bz2)"
+    ],
+    "single-i686": [
+      "RHSA-2015:2697 [arches=i686] (RHEL6/rhel-6-els.oval.xml.bz2)",
+      "RHSA-2014:0137 [arches=i686] (RHEL6/rhel-6-els.oval.xml.bz2)",
+      "RHSA-2017:2702 [arches=i686] (RHEL6/rhel-6-els.oval.xml.bz2)"
+    ],
+    "single-ppc64": [
+      "RHSA-2015:0383 [arches=ppc64] (RHEL7/rhel-7.2-eus.oval.xml.bz2)",
+      "RHSA-2015:1320 [arches=ppc64] (RHEL6/rhel-6.1-eus.oval.xml.bz2)",
+      "RHSA-2015:0384 [arches=ppc64] (RHEL7/rhel-7.2-eus.oval.xml.bz2)"
+    ],
+    "single-ppc64le": [
+      "RHSA-2019:0162 [arches=ppc64le] (RHEL7/rhel-7-alt.oval.xml.bz2)",
+      "RHSA-2019:2862 [arches=ppc64le] (RHEL7/rhel-7-alt.oval.xml.bz2)",
+      "RHSA-2020:3545 [arches=ppc64le] (RHEL7/rhel-7-alt.oval.xml.bz2)"
+    ],
+    "single-x86_64": [
+      "RHSA-2017:2858 [arches=x86_64] (RHEL6/storage-gluster-3.oval.xml.bz2)",
+      "RHSA-2024:3580 [arches=x86_64] (RHEL8/jboss-eap-8.oval.xml.bz2)",
+      "RHSA-2017:0986 [arches=x86_64] (RHEL6/rhel-6.4-aus.oval.xml.bz2)"
+    ]
+  },
+  "rocky": {
+    "multi-arch": [
+      "RLEA-2019:3608 [arches=aarch64,i686,x86_64] (Rocky 8.6)",
+      "RLBA-2022:4151 [arches=aarch64,ppc64le,s390x,x86_64] (Rocky 9.1)",
+      "RLBA-2022:8269 [arches=aarch64,ppc64le,s390x,x86_64] (Rocky 9.1)"
+    ],
+    "noarch-only": [
+      "RLBA-2022:3057 [arches=] (Rocky 9.1)",
+      "RLSA-2023:0835 [arches=] (Rocky 8.7)",
+      "RLBA-2022:4206 [arches=] (Rocky 9.1)"
+    ],
+    "single-aarch64": [
+      "RLSA-2022:1820 [arches=aarch64] (Rocky 8.6)",
+      "RLBA-2022:1872 [arches=aarch64] (Rocky 8.6)",
+      "RLBA-2022:1902 [arches=aarch64] (Rocky 8.6)"
+    ],
+    "single-ppc64le": [
+      "RLBA-2022:3223 [arches=ppc64le] (Rocky 9.1)",
+      "RLBA-2022:8323 [arches=ppc64le] (Rocky 9.1)",
+      "RLBA-2023:4597 [arches=ppc64le] (Rocky 9.2)"
+    ],
+    "single-s390x": [
+      "RLBA-2022:8331 [arches=s390x] (Rocky 9.1)",
+      "RLBA-2022:8329 [arches=s390x] (Rocky 9.1)",
+      "RLEA-2022:6944 [arches=s390x] (Rocky 9.1)"
+    ],
+    "single-x86_64": [
+      "RLBA-2022:7678 [arches=x86_64] (Rocky 8.7)",
+      "RLBA-2022:8182 [arches=x86_64] (Rocky 9.1)",
+      "RLBA-2022:3199 [arches=x86_64] (Rocky 9.1)"
+    ]
+  },
+  "suse-cvrf": {
+    "all-major": [
+      "openSUSE-SU-2015:1946-1 [arches=aarch64,armv7hl,i386,ia64,ppc,ppc64,ppc64le,s390,s390x] (cvrf-opensuse-su-2015%3A1946-1.xml)",
+      "openSUSE-SU-2017:2901-1 [arches=aarch64,armv7hl,i386,ia64,ppc,ppc64,ppc64le,s390,s390x] (cvrf-opensuse-su-2017%3A2901-1.xml)",
+      "openSUSE-SU-2017:3199-1 [arches=aarch64,i386,ia64,mips,ppc,ppc64,ppc64le,s390,s390x,sparc,sparc64,x86_64] (cvrf-opensuse-su-2017%3A3199-1.xml)"
+    ],
+    "multi-arch": [
+      "openSUSE-SU-2015:0893-1 [arches=ppc,s390] (cvrf-opensuse-su-2015%3A0893-1.xml)",
+      "openSUSE-SU-2016:0036-1 [arches=i386,x86_64] (cvrf-opensuse-su-2016%3A0036-1.xml)",
+      "openSUSE-SU-2016:0536-1 [arches=ppc,s390] (cvrf-opensuse-su-2016%3A0536-1.xml)"
+    ],
+    "single-arm64": [
+      "SUSE Image SUSE-IU-2022:1149-1 [arches=arm64] (cvrf-suse-iu-2022%3A1149-1.xml)",
+      "SUSE Image SUSE-IU-2022:1214-1 [arches=arm64] (cvrf-suse-iu-2022%3A1214-1.xml)",
+      "SUSE Image SUSE-IU-2022:1219-1 [arches=arm64] (cvrf-suse-iu-2022%3A1219-1.xml)"
+    ],
+    "single-i386": [
+      "SUSE Image SUSE-IU-2021:212-1 [arches=i386] (cvrf-suse-iu-2021%3A212-1.xml)",
+      "SUSE Image SUSE-IU-2021:213-1 [arches=i386] (cvrf-suse-iu-2021%3A213-1.xml)",
+      "SUSE Image SUSE-IU-2021:214-1 [arches=i386] (cvrf-suse-iu-2021%3A214-1.xml)"
+    ],
+    "single-ppc64": [
+      "SUSE-RU-2015:0621-1 [arches=ppc64] (cvrf-suse-ru-2015%3A0621-1.xml)",
+      "SUSE-RU-2021:14663-1 [arches=ppc64] (cvrf-suse-ru-2021%3A14663-1.xml)",
+      "SUSE-SU-2015:0481-1 [arches=ppc64] (cvrf-suse-su-2015%3A0481-1.xml)"
+    ],
+    "single-x86_64": [
+      "openSUSE-SU-2018:2208-1 [arches=x86_64] (cvrf-opensuse-su-2018%3A2208-1.xml)",
+      "openSUSE-SU-2018:2238-1 [arches=x86_64] (cvrf-opensuse-su-2018%3A2238-1.xml)",
+      "openSUSE-SU-2018:4254-1 [arches=x86_64] (cvrf-opensuse-su-2018%3A4254-1.xml)"
+    ]
+  }
+}

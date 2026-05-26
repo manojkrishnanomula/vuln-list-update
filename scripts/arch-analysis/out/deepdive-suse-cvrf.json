@@ -1,0 +1,186 @@
+{
+  "source": "suse-cvrf",
+  "notes": "Multi-arch test: for each ProductReference string we strip out the arch token, then check that the same stripped identifier appears under all arches in the advisory's product tree. Same-stripped means 'same package@version' with arch removed; that is, same fix.",
+  "total_advisories": 34939,
+  "multi_arch_advisories": 1142,
+  "multi_arch_same_nvr": 301,
+  "multi_arch_diff_nvr": 841,
+  "single_arch_advisories": 1183,
+  "single_arch_by_arch": {
+    "alpha": 1,
+    "arm64": 211,
+    "i386": 10,
+    "ppc": 7,
+    "ppc64": 52,
+    "s390": 18,
+    "s390x": 11,
+    "x86_64": 873
+  },
+  "single_arch_top_packages": {
+    "alpha": [
+      "1x texlive-persian",
+      "1x texlive-persian-doc"
+    ],
+    "arm64": [
+      "158x Public Cloud Image google/sles",
+      "122x grub2-efi",
+      "53x Public Cloud Image google/sle-micro"
+    ],
+    "i386": [
+      "10x grub2-pc"
+    ],
+    "overall": [
+      "543x Container suse/multi-linux-manager/5.1/x86_64/server:latest",
+      "523x Container suse/manager/5.0/x86_64/server:latest",
+      "274x Container suse/hpc/warewulf4-x86_64/sle-hpc-node:latest",
+      "233x Container suse/multi-linux-manager/5.1/x86_64/proxy-salt-broker:latest",
+      "202x Container suse/manager/5.0/x86_64/proxy-httpd:latest",
+      "180x Container suse/manager/5.0/x86_64/proxy-salt-broker:latest",
+      "176x Container suse/multi-linux-manager/5.1/x86_64/proxy-httpd:latest",
+      "168x Container suse/manager/5.0/x86_64/server-migration",
+      "158x Public Cloud Image google/sles",
+      "152x Container suse/manager/5.0/x86_64/server-attestation:latest",
+      "147x Container suse/multi-linux-manager/5.1/x86_64/server-migration",
+      "147x Container suse/multi-linux-manager/5.1/x86_64/server-saline:latest",
+      "133x Container suse/manager/5.0/x86_64/proxy-tftpd:latest",
+      "128x grub2-efi",
+      "127x Container suse/multi-linux-manager/5.1/x86_64/proxy-tftpd:latest"
+    ],
+    "ppc": [
+      "7x cross-binutils"
+    ],
+    "ppc64": [
+      "50x kernel",
+      "50x kernel-base",
+      "50x kernel-devel",
+      "8x ocfs2-kmp",
+      "6x cluster-network-kmp",
+      "6x gfs2-kmp",
+      "3x drbd-kmp",
+      "2x iscsitarget-kmp",
+      "2x ofed-kmp",
+      "1x oracleasm-kmp"
+    ],
+    "s390": [
+      "12x tools",
+      "8x tools-hmcdrvfs",
+      "8x tools-zdsfs",
+      "5x qemu",
+      "4x tools-chreipl-fcp-mpath",
+      "4x tools-genprotimg-data",
+      "1x os-autoinst-deps"
+    ],
+    "s390x": [
+      "11x qemu"
+    ],
+    "x86_64": [
+      "543x Container suse/multi-linux-manager/5.1/x86_64/server:latest",
+      "523x Container suse/manager/5.0/x86_64/server:latest",
+      "274x Container suse/hpc/warewulf4-x86_64/sle-hpc-node:latest",
+      "233x Container suse/multi-linux-manager/5.1/x86_64/proxy-salt-broker:latest",
+      "202x Container suse/manager/5.0/x86_64/proxy-httpd:latest",
+      "180x Container suse/manager/5.0/x86_64/proxy-salt-broker:latest",
+      "176x Container suse/multi-linux-manager/5.1/x86_64/proxy-httpd:latest",
+      "168x Container suse/manager/5.0/x86_64/server-migration",
+      "152x Container suse/manager/5.0/x86_64/server-attestation:latest",
+      "147x Container suse/multi-linux-manager/5.1/x86_64/server-migration"
+    ]
+  },
+  "single_arch_top_packages_by_arch": {
+    "alpha": {
+      "texlive-persian": 1,
+      "texlive-persian-doc": 1
+    },
+    "arm64": {
+      "Public Cloud Image google/sle-micro": 53,
+      "Public Cloud Image google/sles": 158,
+      "grub2-efi": 122
+    },
+    "i386": {
+      "grub2-pc": 10
+    },
+    "ppc": {
+      "cross-binutils": 7
+    },
+    "ppc64": {
+      "cluster-network-kmp": 6,
+      "drbd-kmp": 3,
+      "gfs2-kmp": 6,
+      "iscsitarget-kmp": 2,
+      "kernel": 50,
+      "kernel-base": 50,
+      "kernel-devel": 50,
+      "ocfs2-kmp": 8,
+      "ofed-kmp": 2,
+      "oracleasm-kmp": 1
+    },
+    "s390": {
+      "os-autoinst-deps": 1,
+      "qemu": 5,
+      "tools": 12,
+      "tools-chreipl-fcp-mpath": 4,
+      "tools-genprotimg-data": 4,
+      "tools-hmcdrvfs": 8,
+      "tools-zdsfs": 8
+    },
+    "s390x": {
+      "qemu": 11
+    },
+    "x86_64": {
+      "Container suse/hpc/warewulf4-x86_64/sle-hpc-node:latest": 274,
+      "Container suse/manager/5.0/x86_64/proxy-httpd:latest": 202,
+      "Container suse/manager/5.0/x86_64/proxy-salt-broker:latest": 180,
+      "Container suse/manager/5.0/x86_64/proxy-squid:latest": 81,
+      "Container suse/manager/5.0/x86_64/proxy-ssh:latest": 119,
+      "Container suse/manager/5.0/x86_64/proxy-tftpd:latest": 133,
+      "Container suse/manager/5.0/x86_64/server-attestation:latest": 152,
+      "Container suse/manager/5.0/x86_64/server-hub-xmlrpc-api:latest": 112,
+      "Container suse/manager/5.0/x86_64/server-migration": 168,
+      "Container suse/manager/5.0/x86_64/server:latest": 523,
+      "Container suse/multi-linux-manager/5.1/x86_64/proxy-httpd:latest": 176,
+      "Container suse/multi-linux-manager/5.1/x86_64/proxy-salt-broker:latest": 233,
+      "Container suse/multi-linux-manager/5.1/x86_64/proxy-squid:latest": 111,
+      "Container suse/multi-linux-manager/5.1/x86_64/proxy-ssh:latest": 109,
+      "Container suse/multi-linux-manager/5.1/x86_64/proxy-tftpd:latest": 127,
+      "Container suse/multi-linux-manager/5.1/x86_64/server-attestation:latest": 127,
+      "Container suse/multi-linux-manager/5.1/x86_64/server-hub-xmlrpc-api:latest": 102,
+      "Container suse/multi-linux-manager/5.1/x86_64/server-migration": 147,
+      "Container suse/multi-linux-manager/5.1/x86_64/server-postgresql:latest": 101,
+      "Container suse/multi-linux-manager/5.1/x86_64/server-saline:latest": 147,
+      "Container suse/multi-linux-manager/5.1/x86_64/server:latest": 543,
+      "build-initvm": 1,
+      "grub2-efi": 6,
+      "grub2-xen": 6,
+      "openssl": 2,
+      "openstack-ironic-image": 1,
+      "openstack-octavia-amphora-image": 6,
+      "qemu-ovmf": 23,
+      "qemu-ovmf-debug": 19,
+      "sleshammer": 1,
+      "suse-manager": 2,
+      "venv-openstack-aodh": 15,
+      "venv-openstack-barbican": 34,
+      "venv-openstack-ceilometer": 14,
+      "venv-openstack-cinder": 33,
+      "venv-openstack-designate": 34,
+      "venv-openstack-freezer": 14,
+      "venv-openstack-glance": 31,
+      "venv-openstack-heat": 37,
+      "venv-openstack-horizon": 41,
+      "venv-openstack-horizon-hpe": 18,
+      "venv-openstack-ironic": 31,
+      "venv-openstack-keystone": 34,
+      "venv-openstack-magnum": 35,
+      "venv-openstack-manila": 36,
+      "venv-openstack-monasca": 36,
+      "venv-openstack-monasca-ceilometer": 32,
+      "venv-openstack-murano": 16,
+      "venv-openstack-neutron": 37,
+      "venv-openstack-nova": 36,
+      "venv-openstack-octavia": 34,
+      "venv-openstack-sahara": 34,
+      "venv-openstack-swift": 28,
+      "venv-openstack-trove": 15
+    }
+  }
+}

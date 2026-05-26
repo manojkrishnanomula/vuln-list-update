@@ -1,0 +1,29 @@
+{
+  "all_arch_advisories": 0,
+  "arch_specific_advisories": 2380,
+  "noarch_only_advisories": 854,
+  "notes": "Rocky aggregated over discovered releases \u00d7 {BaseOS,AppStream,extras} \u00d7 {x86_64,aarch64,ppc64le,s390x}.",
+  "per_arch_advisories": {
+    "aarch64": 2265,
+    "i686": 254,
+    "ppc64le": 1544,
+    "s390x": 1508,
+    "x86_64": 2327
+  },
+  "per_arch_exclusive": {
+    "aarch64": 27,
+    "ppc64le": 15,
+    "s390x": 8,
+    "x86_64": 69
+  },
+  "single_arch_advisories": 119,
+  "source": "rocky",
+  "total_advisories": 3234,
+  "upstream_supported_arches": [
+    "aarch64",
+    "i686",
+    "ppc64le",
+    "s390x",
+    "x86_64"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "all_arch_advisories": 5991,
+  "arch_specific_advisories": 58,
+  "noarch_only_advisories": 908,
+  "notes": "openEuler CVRF advisory_id -> ProductTree branch arches.",
+  "per_arch_advisories": {
+    "aarch64": 6006,
+    "x86_64": 6034
+  },
+  "per_arch_exclusive": {
+    "aarch64": 15,
+    "x86_64": 43
+  },
+  "single_arch_advisories": 58,
+  "source": "openeuler",
+  "total_advisories": 6957,
+  "upstream_supported_arches": [
+    "aarch64",
+    "x86_64"
+  ]
+}

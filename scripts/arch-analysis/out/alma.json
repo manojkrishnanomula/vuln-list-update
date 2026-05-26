@@ -1,0 +1,27 @@
+{
+  "all_arch_advisories": 937,
+  "arch_specific_advisories": 2317,
+  "noarch_only_advisories": 245,
+  "notes": "AlmaLinux 8/9/10 combined; arch from each errata package.",
+  "per_arch_advisories": {
+    "aarch64": 2991,
+    "i686": 1121,
+    "ppc64le": 2949,
+    "s390x": 2663,
+    "x86_64": 3249
+  },
+  "per_arch_exclusive": {
+    "aarch64": 4,
+    "x86_64": 170
+  },
+  "single_arch_advisories": 174,
+  "source": "alma",
+  "total_advisories": 3499,
+  "upstream_supported_arches": [
+    "aarch64",
+    "i686",
+    "ppc64le",
+    "s390x",
+    "x86_64"
+  ]
+}

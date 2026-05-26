@@ -1,0 +1,35 @@
+{
+  "all_arch_advisories": 0,
+  "arch_specific_advisories": 45,
+  "noarch_only_advisories": 0,
+  "notes": "'TotalAdvisories' = number of (release,repo) secdb files. Alpine's 'archs' field is the same for every package within a secdb file; individual CVE entries do not declare per-CVE arch. CVE-pkg pair count: 105881 (arch-specific subset: 105881).",
+  "per_arch_advisories": {
+    "aarch64": 40,
+    "armhf": 45,
+    "armv7": 32,
+    "loongarch64": 8,
+    "mips64": 4,
+    "ppc64le": 38,
+    "riscv64": 10,
+    "s390x": 38,
+    "x86": 45,
+    "x86_64": 45
+  },
+  "per_arch_exclusive": null,
+  "single_arch_advisories": 0,
+  "source": "alpine",
+  "total_advisories": 45,
+  "unique_cves": 9304,
+  "upstream_supported_arches": [
+    "aarch64",
+    "armhf",
+    "armv7",
+    "loongarch64",
+    "mips64",
+    "ppc64le",
+    "riscv64",
+    "s390x",
+    "x86",
+    "x86_64"
+  ]
+}

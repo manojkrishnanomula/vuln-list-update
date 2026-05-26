@@ -1,0 +1,22 @@
+{
+  "all_arch_advisories": 1970,
+  "arch_specific_advisories": 3290,
+  "noarch_only_advisories": 580,
+  "notes": "Counts merge across Amazon Linux 1/2/2022/2023; 'arch-specific' = ALAS whose concrete arch set is a strict, non-empty subset of the union of all observed concrete arches.",
+  "per_arch_advisories": {
+    "aarch64": 3449,
+    "i686": 3651,
+    "x86_64": 5260
+  },
+  "per_arch_exclusive": {
+    "x86_64": 130
+  },
+  "single_arch_advisories": 130,
+  "source": "amazon",
+  "total_advisories": 5840,
+  "upstream_supported_arches": [
+    "aarch64",
+    "i686",
+    "x86_64"
+  ]
+}
